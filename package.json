@@ -7,8 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@types/http-errors": "^1.8.0",
     "@types/uuid": "^8.3.0",
     "aws-sdk": "^2.740.0",
+    "http-errors": "^1.8.0",
     "serverless-pseudo-parameters": "^2.5.0",
     "source-map-support": "^0.5.10",
     "uuid": "^8.3.0"

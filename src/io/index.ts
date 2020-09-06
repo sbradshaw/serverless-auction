@@ -1,5 +1,6 @@
 import { DynamoDB } from "aws-sdk";
 import config from "../../config";
+import createError from "http-errors";
 
 const dbClient: DynamoDB.DocumentClient = new DynamoDB.DocumentClient({
   region: config.dbRegion,
@@ -12,8 +13,12 @@ export const dynamo = {
       Item: data,
     };
 
-    const res = await dbClient.put(params).promise();
-    return res;
+    try {
+      await dbClient.put(params).promise();
+    } catch (error) {
+      console.log(error);
+      throw new createError.InternalServerError(error);
+    }
   },
 };
 
