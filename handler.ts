@@ -1,35 +1,14 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 import "source-map-support/register";
-import { v4 as uuid } from "uuid";
-import { DynamoDB } from "aws-sdk";
-import config from "./config";
-
-const dbClient: DynamoDB.DocumentClient = new DynamoDB.DocumentClient({
-  region: config.dbRegion,
-});
+import service from "./src/domain/service";
+import io from "./src/io";
 
 export const createAuction: APIGatewayProxyHandler = async (
   event,
   _context
 ) => {
-  const { title } = JSON.parse(event.body);
-  const now = new Date();
-  const auction = {
-    id: uuid(),
-    title,
-    status: "open",
-    createdAt: now.toISOString(),
-  };
+  const input = io.handler.input(event);
+  const result = await service(io).createAuction(input);
 
-  await dbClient
-    .put({
-      TableName: "auctions-table",
-      Item: auction,
-    })
-    .promise();
-
-  return {
-    statusCode: 201,
-    body: JSON.stringify(auction),
-  };
+  return io.handler.returnSuccess(result);
 };
