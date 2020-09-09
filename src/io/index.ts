@@ -24,8 +24,8 @@ export const dynamo = {
 
 export const handler = {
   input: (x: any) => JSON.parse(x.body),
-  returnSuccess: (x: any) => ({
-    statusCode: 201,
+  returnSuccess: (x: any, status: number) => ({
+    statusCode: status,
     body: JSON.stringify(x),
   }),
 };
