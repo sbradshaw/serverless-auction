@@ -9,7 +9,7 @@ const dbClient: DynamoDB.DocumentClient = new DynamoDB.DocumentClient({
 export const dynamo = {
   put: async (data: any) => {
     const params = {
-      TableName: "auctions-table",
+      TableName: config.tableName,
       Item: data,
     };
 
