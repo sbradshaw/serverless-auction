@@ -12,7 +12,12 @@ export default (io: any) => ({
     };
 
     await io.db.put(auction);
-
     return auction;
+  },
+  getAuctions: async () => {
+    let auctions: any;
+
+    auctions = await io.db.scan();
+    return auctions.Items;
   },
 });

@@ -75,6 +75,17 @@ const serverlessConfiguration: Serverless = {
         },
       ],
     },
+    getAuctions: {
+      handler: "handler.getAuctions",
+      events: [
+        {
+          http: {
+            method: "get",
+            path: "/auctions",
+          },
+        },
+      ],
+    },
   },
 };
 

@@ -20,6 +20,21 @@ export const dynamo = {
       throw new createError.InternalServerError(error);
     }
   },
+  scan: async () => {
+    let result: any;
+    const params = {
+      TableName: config.tableName,
+    };
+
+    try {
+      result = await dbClient.scan(params).promise();
+    } catch (error) {
+      console.log(error);
+      throw new createError.InternalServerError(error);
+    }
+
+    return result;
+  },
 };
 
 export const handler = {
