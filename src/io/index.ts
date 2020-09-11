@@ -35,10 +35,33 @@ export const dynamo = {
 
     return result;
   },
+  get: async (key: any) => {
+    let result: any;
+    const params = {
+      TableName: config.tableName,
+      Key: key,
+    };
+
+    try {
+      result = await dbClient.get(params).promise();
+    } catch (error) {
+      console.log(error);
+      throw new createError.InternalServerError(error);
+    }
+
+    if (!result) {
+      throw new createError.NotFound(
+        `Auction item with id: ${key.id} not found`
+      );
+    }
+
+    return result;
+  },
 };
 
 export const handler = {
   input: (x: any) => JSON.parse(x.body),
+  parameters: (x: any) => x.pathParameters,
   returnSuccess: (x: any, status: number) => ({
     statusCode: status,
     body: JSON.stringify(x),

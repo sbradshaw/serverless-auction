@@ -20,4 +20,11 @@ export default (io: any) => ({
     auctions = await io.db.scan();
     return auctions.Items;
   },
+  getAuction: async (data: any) => {
+    const { id } = data;
+    let auction: any;
+
+    auction = await io.db.get({ id });
+    return auction.Item;
+  },
 });

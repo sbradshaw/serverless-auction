@@ -16,6 +16,12 @@ export const createAuction: APIGatewayProxyHandler = async (
 
 export const getAuctions: APIGatewayProxyHandler = async (_context) => {
   const result = await service(io).getAuctions();
+  return io.handler.returnSuccess(result, HttpStatusCode.OK);
+};
+
+export const getAuction: APIGatewayProxyHandler = async (event, _context) => {
+  const parameters = io.handler.parameters(event);
+  const result = await service(io).getAuction(parameters);
 
   return io.handler.returnSuccess(result, HttpStatusCode.OK);
 };
