@@ -9,6 +9,9 @@ export default (io: any) => ({
       title,
       status: "open",
       createdAt: now.toISOString(),
+      highestBid: {
+        amount: 0,
+      },
     };
 
     await io.db.put(auction);
@@ -20,11 +23,19 @@ export default (io: any) => ({
     auctions = await io.db.scan();
     return auctions.Items;
   },
-  getAuction: async (data: any) => {
-    const { id } = data;
+  getAuction: async (parameters: any) => {
+    const { id } = parameters;
     let auction: any;
 
     auction = await io.db.get({ id });
     return auction.Item;
+  },
+  placeBid: async (parameters: any, data: any) => {
+    const { id } = parameters;
+    const { amount } = data;
+    let auctionUpdate: any;
+
+    auctionUpdate = await io.db.update({ id }, amount);
+    return auctionUpdate;
   },
 });

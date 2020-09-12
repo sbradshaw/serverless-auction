@@ -57,11 +57,33 @@ export const dynamo = {
 
     return result;
   },
+  update: async (key: any, amount: number) => {
+    const params = {
+      TableName: config.tableName,
+      Key: key,
+      UpdateExpression: "set highestBid.amount = :amount",
+      ExpressionAttributeValues: {
+        ":amount": amount,
+      },
+      ReturnValues: "ALL_NEW",
+    };
+    let updateResult: any;
+
+    try {
+      const result = await dbClient.update(params).promise();
+      updateResult = result.Attributes;
+    } catch (error) {
+      console.log(error);
+      throw new createError.InternalServerError(error);
+    }
+
+    return updateResult;
+  },
 };
 
 export const handler = {
-  input: (x: any) => JSON.parse(x.body),
-  parameters: (x: any) => x.pathParameters,
+  input: (event: any) => JSON.parse(event.body),
+  parameters: (event: any) => event.pathParameters,
   returnSuccess: (x: any, status: number) => ({
     statusCode: status,
     body: JSON.stringify(x),

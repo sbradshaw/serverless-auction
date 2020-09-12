@@ -97,6 +97,17 @@ const serverlessConfiguration: Serverless = {
         },
       ],
     },
+    placeBid: {
+      handler: "handler.placeBid",
+      events: [
+        {
+          http: {
+            method: "patch",
+            path: "/auction/{id}/bid",
+          },
+        },
+      ],
+    },
   },
 };
 
