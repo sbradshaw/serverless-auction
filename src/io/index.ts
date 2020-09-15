@@ -68,6 +68,13 @@ export const dynamo = {
       ReturnValues: "ALL_NEW",
     };
     let updateResult: any;
+    const auction = await dynamo.get(key);
+
+    if (amount <= auction.Item.highestBid.amount) {
+      throw new createError.Forbidden(
+        `The bid must be higher than ${auction.Item.highestBid.amount}`
+      );
+    }
 
     try {
       const result = await dbClient.update(params).promise();
