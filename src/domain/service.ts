@@ -4,11 +4,15 @@ export default (io: any) => ({
   createAuction: async (data: any) => {
     const { title } = data;
     const now = new Date();
+    const endDate = new Date();
+    endDate.setHours(now.getHours() + 1);
+
     const auction = {
       id: uuid(),
       title,
       status: "open",
       createdAt: now.toISOString(),
+      endingAt: endDate.toISOString(),
       highestBid: {
         amount: 0,
       },

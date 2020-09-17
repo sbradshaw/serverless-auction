@@ -52,11 +52,37 @@ const serverlessConfiguration: Serverless = {
               AttributeName: "id",
               AttributeType: "S",
             },
+            {
+              AttributeName: "status",
+              AttributeType: "S",
+            },
+            {
+              AttributeName: "endingAt",
+              AttributeType: "S",
+            },
           ],
           KeySchema: [
             {
               AttributeName: "id",
               KeyType: "HASH",
+            },
+          ],
+          GlobalSecondaryIndexes: [
+            {
+              IndexName: "statusAndEndDate",
+              KeySchema: [
+                {
+                  AttributeName: "status",
+                  KeyType: "HASH",
+                },
+                {
+                  AttributeName: "endingAt",
+                  KeyType: "RANGE",
+                },
+              ],
+              Projection: {
+                ProjectionType: "ALL",
+              },
             },
           ],
         },
@@ -107,6 +133,14 @@ const serverlessConfiguration: Serverless = {
           },
         },
       ],
+    },
+    processAuctions: {
+      handler: "handler.processAuctions",
+      // events: [
+      //   {
+      //     schedule: "rate(1 minute)",
+      //   },
+      // ],
     },
   },
 };
