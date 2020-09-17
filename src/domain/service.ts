@@ -42,4 +42,10 @@ export default (io: any) => ({
     auctionUpdate = await io.db.update({ id }, amount);
     return auctionUpdate;
   },
+  getEndedAuctions: async () => {
+    let auctions: any;
+
+    auctions = await io.db.getEnded();
+    return auctions.Items;
+  },
 });

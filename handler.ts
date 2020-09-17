@@ -35,6 +35,8 @@ export const placeBid: APIGatewayProxyHandler = async (event, _context) => {
 };
 
 export const processAuctions: APIGatewayProxyHandler = async (_context) => {
-  console.log("<<< processAuctions >>>");
-  return io.handler.returnSuccess([{ result: "passed" }], HttpStatusCode.OK);
+  const result = await service(io).getEndedAuctions();
+  console.log(result);
+
+  return io.handler.returnSuccess(result, HttpStatusCode.OK);
 };

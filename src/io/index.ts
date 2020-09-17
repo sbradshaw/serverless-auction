@@ -86,6 +86,31 @@ export const dynamo = {
 
     return updateResult;
   },
+  getEnded: async () => {
+    let result: any;
+    const now = new Date();
+    const params = {
+      TableName: config.tableName,
+      IndexName: "statusAndEndDate",
+      KeyConditionExpression: "#status = :status AND endingAt <= :now",
+      ExpressionAttributeValues: {
+        ":status": "open",
+        ":now": now.toISOString(),
+      },
+      ExpressionAttributeNames: {
+        "#status": "status",
+      },
+    };
+
+    try {
+      result = await dbClient.query(params).promise();
+    } catch (error) {
+      console.log(error);
+      throw new createError.InternalServerError(error);
+    }
+
+    return result;
+  },
 };
 
 export const handler = {

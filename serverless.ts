@@ -21,8 +21,10 @@ const serverlessConfiguration: Serverless = {
     iamRoleStatements: [
       {
         Effect: "Allow",
-        Resource:
+        Resource: [
           "arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/auctions-table",
+          "arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/auctions-table/index/statusAndEndDate",
+        ],
         Action: [
           "dynamoDb:Query",
           "dynamoDb:Scan",
