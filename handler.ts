@@ -3,6 +3,7 @@ import "source-map-support/register";
 import { HttpStatusCode } from "./src/enums/status";
 import service from "./src/domain/service";
 import io from "./src/io";
+import createError from "http-errors";
 
 export const createAuction: APIGatewayProxyHandler = async (
   event,
@@ -16,6 +17,7 @@ export const createAuction: APIGatewayProxyHandler = async (
 
 export const getAuctions: APIGatewayProxyHandler = async (_context) => {
   const result = await service(io).getAuctions();
+
   return io.handler.returnSuccess(result, HttpStatusCode.OK);
 };
 
@@ -35,8 +37,21 @@ export const placeBid: APIGatewayProxyHandler = async (event, _context) => {
 };
 
 export const processAuctions: APIGatewayProxyHandler = async (_context) => {
-  const result = await service(io).getEndedAuctions();
-  console.log(result);
+  try {
+    const endedAuctions = await service(io).getEndedAuctions();
 
-  return io.handler.returnSuccess(result, HttpStatusCode.OK);
+    await Promise.all(
+      endedAuctions.map(
+        async (auction: any) => await service(io).closeAuction(auction)
+      )
+    );
+
+    return io.handler.returnSuccess(
+      `ended auctions: ${endedAuctions.length}`,
+      HttpStatusCode.OK
+    );
+  } catch (error) {
+    console.log(error);
+    throw new createError.InternalServerError(error);
+  }
 };

@@ -111,6 +111,29 @@ export const dynamo = {
 
     return result;
   },
+  close: async (key: any) => {
+    let result: any;
+    const params = {
+      TableName: config.tableName,
+      Key: key,
+      UpdateExpression: "set #status = :status",
+      ExpressionAttributeValues: {
+        ":status": "closed",
+      },
+      ExpressionAttributeNames: {
+        "#status": "status",
+      },
+    };
+
+    try {
+      result = await dbClient.update(params).promise();
+    } catch (error) {
+      console.log(error);
+      throw new createError.InternalServerError(error);
+    }
+
+    return result;
+  },
 };
 
 export const handler = {

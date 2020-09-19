@@ -48,4 +48,11 @@ export default (io: any) => ({
     auctions = await io.db.getEnded();
     return auctions.Items;
   },
+  closeAuction: async (data: any) => {
+    const { id } = data;
+    let closedAuctionItems: any;
+
+    closedAuctionItems = await io.db.close({ id });
+    return closedAuctionItems;
+  },
 });
