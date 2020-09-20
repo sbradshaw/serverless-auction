@@ -70,6 +70,10 @@ export const dynamo = {
     let updateResult: any;
     const auction = await dynamo.get(key);
 
+    if (auction.Item.status !== "open") {
+      throw new createError.Forbidden(`You cannot bid on closed auction items`);
+    }
+
     if (amount <= auction.Item.highestBid.amount) {
       throw new createError.Forbidden(
         `The bid must be higher than ${auction.Item.highestBid.amount}`
