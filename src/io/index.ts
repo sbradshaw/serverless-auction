@@ -20,21 +20,6 @@ export const dynamo = {
       throw new createError.InternalServerError(error);
     }
   },
-  scan: async () => {
-    let result: any;
-    const params = {
-      TableName: config.tableName,
-    };
-
-    try {
-      result = await dbClient.scan(params).promise();
-    } catch (error) {
-      console.log(error);
-      throw new createError.InternalServerError(error);
-    }
-
-    return result;
-  },
   get: async (key: any) => {
     let result: any;
     const params = {
@@ -115,6 +100,29 @@ export const dynamo = {
 
     return result;
   },
+  getByStatus: async (status: any) => {
+    let result: any;
+    const params = {
+      TableName: config.tableName,
+      IndexName: "statusAndEndDate",
+      KeyConditionExpression: "#status = :status",
+      ExpressionAttributeValues: {
+        ":status": status,
+      },
+      ExpressionAttributeNames: {
+        "#status": "status",
+      },
+    };
+
+    try {
+      result = await dbClient.query(params).promise();
+    } catch (error) {
+      console.log(error);
+      throw new createError.InternalServerError(error);
+    }
+
+    return result;
+  },
   close: async (key: any) => {
     let result: any;
     const params = {
@@ -143,6 +151,7 @@ export const dynamo = {
 export const handler = {
   input: (event: any) => JSON.parse(event.body),
   parameters: (event: any) => event.pathParameters,
+  queryParameters: (event: any) => event.queryStringParameters,
   returnSuccess: (x: any, status: number) => ({
     statusCode: status,
     body: JSON.stringify(x),

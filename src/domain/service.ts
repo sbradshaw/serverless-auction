@@ -21,10 +21,11 @@ export default (io: any) => ({
     await io.db.put(auction);
     return auction;
   },
-  getAuctions: async () => {
+  getAuctions: async (parameters: any) => {
+    const { status } = parameters;
     let auctions: any;
 
-    auctions = await io.db.scan();
+    auctions = await io.db.getByStatus(status);
     return auctions.Items;
   },
   getAuction: async (parameters: any) => {
