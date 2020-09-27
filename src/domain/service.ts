@@ -1,11 +1,13 @@
 import { v4 as uuid } from "uuid";
+import config from "../../config";
+import createError from "http-errors";
 
 export default (io: any) => ({
-  createAuction: async (data: any) => {
+  createAuction: async (data: { title: any }) => {
     const { title } = data;
     const now = new Date();
     const endDate = new Date();
-    endDate.setHours(now.getHours() + 1);
+    endDate.setHours(now.getHours() + config.expiryOffset);
 
     const auction = {
       id: uuid(),
@@ -17,43 +19,150 @@ export default (io: any) => ({
         amount: 0,
       },
     };
+    const params = {
+      TableName: config.tableName,
+      Item: auction,
+    };
 
-    await io.db.put(auction);
+    try {
+      await io.db.put(params);
+    } catch (error) {
+      console.log(error);
+      throw new createError.InternalServerError(error);
+    }
+
     return auction;
   },
-  getAuctions: async (parameters: any) => {
-    const { status } = parameters;
-    let auctions: any;
+  getAuctions: async (queryStringParams: { status: any }) => {
+    const { status } = queryStringParams;
+    const params = {
+      TableName: config.tableName,
+      IndexName: "statusAndEndDate",
+      KeyConditionExpression: "#status = :status",
+      ExpressionAttributeValues: {
+        ":status": status,
+      },
+      ExpressionAttributeNames: {
+        "#status": "status",
+      },
+    };
+    let auctions: { Items: any };
 
-    auctions = await io.db.getByStatus(status);
+    try {
+      auctions = await io.db.query(params);
+    } catch (error) {
+      console.log(error);
+      throw new createError.InternalServerError(error);
+    }
+
     return auctions.Items;
   },
-  getAuction: async (parameters: any) => {
-    const { id } = parameters;
-    let auction: any;
+  getAuction: async (pathParams: { id: any }) => {
+    const { id } = pathParams;
+    const params = {
+      TableName: config.tableName,
+      Key: { id },
+    };
+    let auction: { Item: any };
 
-    auction = await io.db.get({ id });
+    try {
+      auction = await io.db.get(params);
+    } catch (error) {
+      console.log(error);
+      throw new createError.InternalServerError(error);
+    }
+
+    if (!auction) {
+      throw new createError.NotFound(`Auction item with id: ${id} not found`);
+    }
+
     return auction.Item;
   },
-  placeBid: async (parameters: any, data: any) => {
-    const { id } = parameters;
+  placeBid: async (pathParams: { id: any }, data: { amount: any }) => {
+    const { id } = pathParams;
     const { amount } = data;
+    const params = {
+      TableName: config.tableName,
+      Key: { id },
+      UpdateExpression: "set highestBid.amount = :amount",
+      ExpressionAttributeValues: {
+        ":amount": amount,
+      },
+      ReturnValues: "ALL_NEW",
+    };
     let auctionUpdate: any;
 
-    auctionUpdate = await io.db.update({ id }, amount);
+    const auction = await io.db.get({
+      TableName: config.tableName,
+      Key: { id },
+    });
+
+    if (auction.Item.status !== "open") {
+      throw new createError.Forbidden(`You cannot bid on closed auction items`);
+    }
+
+    if (amount <= auction.Item.highestBid.amount) {
+      throw new createError.Forbidden(
+        `The bid must be higher than ${auction.Item.highestBid.amount}`
+      );
+    }
+
+    try {
+      auctionUpdate = await io.db.update(params);
+    } catch (error) {
+      console.log(error);
+      throw new createError.InternalServerError(error);
+    }
+
     return auctionUpdate;
   },
   getEndedAuctions: async () => {
-    let auctions: any;
+    const now = new Date();
+    const params = {
+      TableName: config.tableName,
+      IndexName: "statusAndEndDate",
+      KeyConditionExpression: "#status = :status AND endingAt <= :now",
+      ExpressionAttributeValues: {
+        ":status": "open",
+        ":now": now.toISOString(),
+      },
+      ExpressionAttributeNames: {
+        "#status": "status",
+      },
+    };
+    let auctions: { Items: any };
 
-    auctions = await io.db.getEnded();
+    try {
+      auctions = await io.db.query(params);
+    } catch (error) {
+      console.log(error);
+      throw new createError.InternalServerError(error);
+    }
+
     return auctions.Items;
   },
-  closeAuction: async (data: any) => {
+  closeAuction: async (data: { id: any }) => {
     const { id } = data;
     let closedAuctionItems: any;
 
-    closedAuctionItems = await io.db.close({ id });
+    const params = {
+      TableName: config.tableName,
+      Key: { id },
+      UpdateExpression: "set #status = :status",
+      ExpressionAttributeValues: {
+        ":status": "closed",
+      },
+      ExpressionAttributeNames: {
+        "#status": "status",
+      },
+    };
+    try {
+      closedAuctionItems = await io.db.update(params);
+    } catch (error) {
+      console.log(error);
+      throw new createError.InternalServerError(error);
+    }
+
     return closedAuctionItems;
   },
 });

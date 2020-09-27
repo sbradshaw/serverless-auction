@@ -16,23 +16,23 @@ export const createAuction: APIGatewayProxyHandler = async (
 };
 
 export const getAuctions: APIGatewayProxyHandler = async (event, _context) => {
-  const parameters = io.handler.queryParameters(event);
-  const result = await service(io).getAuctions(parameters);
+  const queryStringParams = io.handler.queryStringParams(event);
+  const result = await service(io).getAuctions(queryStringParams);
 
   return io.handler.returnSuccess(result, HttpStatusCode.OK);
 };
 
 export const getAuction: APIGatewayProxyHandler = async (event, _context) => {
-  const parameters = io.handler.parameters(event);
-  const result = await service(io).getAuction(parameters);
+  const pathParams = io.handler.pathParams(event);
+  const result = await service(io).getAuction(pathParams);
 
   return io.handler.returnSuccess(result, HttpStatusCode.OK);
 };
 
 export const placeBid: APIGatewayProxyHandler = async (event, _context) => {
-  const parameters = io.handler.parameters(event);
+  const pathParams = io.handler.pathParams(event);
   const input = io.handler.input(event);
-  const result = await service(io).placeBid(parameters, input);
+  const result = await service(io).placeBid(pathParams, input);
 
   return io.handler.returnSuccess(result, HttpStatusCode.OK);
 };
