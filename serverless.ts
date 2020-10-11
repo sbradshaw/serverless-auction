@@ -93,7 +93,7 @@ const serverlessConfiguration: Serverless = {
   },
   functions: {
     createAuction: {
-      handler: "handler.createAuction",
+      handler: "src/handlers/createAuction.handler",
       events: [
         {
           http: {
@@ -104,7 +104,7 @@ const serverlessConfiguration: Serverless = {
       ],
     },
     getAuctions: {
-      handler: "handler.getAuctions",
+      handler: "src/handlers/getAuctions.handler",
       events: [
         {
           http: {
@@ -115,7 +115,7 @@ const serverlessConfiguration: Serverless = {
       ],
     },
     getAuction: {
-      handler: "handler.getAuction",
+      handler: "src/handlers/getAuction.handler",
       events: [
         {
           http: {
@@ -126,7 +126,7 @@ const serverlessConfiguration: Serverless = {
       ],
     },
     placeBid: {
-      handler: "handler.placeBid",
+      handler: "src/handlers/placeBid.handler",
       events: [
         {
           http: {
@@ -137,7 +137,7 @@ const serverlessConfiguration: Serverless = {
       ],
     },
     processAuctions: {
-      handler: "handler.processAuctions",
+      handler: "src/handlers/processAuctions.handler",
       // events: [
       //   {
       //     schedule: "rate(1 minute)",
