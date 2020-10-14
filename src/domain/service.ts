@@ -25,7 +25,7 @@ export default (io: any) => ({
     };
 
     try {
-      await io.db.put(params);
+      await io.db.call("put", params);
     } catch (error) {
       console.log(error);
       throw new createError.InternalServerError(error);
@@ -49,7 +49,7 @@ export default (io: any) => ({
     let auctions: { Items: any };
 
     try {
-      auctions = await io.db.query(params);
+      auctions = await io.db.call("query", params);
     } catch (error) {
       console.log(error);
       throw new createError.InternalServerError(error);
@@ -66,7 +66,7 @@ export default (io: any) => ({
     let auction: { Item: any };
 
     try {
-      auction = await io.db.get(params);
+      auction = await io.db.call("get", params);
     } catch (error) {
       console.log(error);
       throw new createError.InternalServerError(error);
@@ -92,7 +92,7 @@ export default (io: any) => ({
     };
     let auctionUpdate: any;
 
-    const auction = await io.db.get({
+    const auction = await io.db.call("get", {
       TableName: config.tableName,
       Key: { id },
     });
@@ -103,18 +103,18 @@ export default (io: any) => ({
 
     if (amount <= auction.Item.highestBid.amount) {
       throw new createError.Forbidden(
-        `The bid must be higher than ${auction.Item.highestBid.amount}`
+        `The bid must be higher than ${auction.Item.highestBid.amount}`,
       );
     }
 
     try {
-      auctionUpdate = await io.db.update(params);
+      auctionUpdate = await io.db.call("update", params);
     } catch (error) {
       console.log(error);
       throw new createError.InternalServerError(error);
     }
 
-    return auctionUpdate;
+    return auctionUpdate.Attributes;
   },
   getEndedAuctions: async () => {
     const now = new Date();
@@ -133,7 +133,7 @@ export default (io: any) => ({
     let auctions: { Items: any };
 
     try {
-      auctions = await io.db.query(params);
+      auctions = await io.db.call("query", params);
     } catch (error) {
       console.log(error);
       throw new createError.InternalServerError(error);
@@ -156,13 +156,14 @@ export default (io: any) => ({
         "#status": "status",
       },
     };
+
     try {
-      closedAuctionItems = await io.db.update(params);
+      closedAuctionItems = await io.db.call("update", params);
     } catch (error) {
       console.log(error);
       throw new createError.InternalServerError(error);
     }
 
-    return closedAuctionItems;
+    return closedAuctionItems.Attributes;
   },
 });
