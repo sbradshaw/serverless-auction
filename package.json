@@ -4,11 +4,13 @@
   "description": "Serverless webpack example using Typescript",
   "main": "handler.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "deploy": "sls deploy -v",
+    "deploy-fn": "sls deploy function -f $FUNCTION"
   },
   "dependencies": {
     "@middy/core": "^1.4.0",
     "@middy/http-error-handler": "^1.4.0",
+    "@middy/http-json-body-parser": "^1.4.0",
     "@middy/validator": "^1.4.0",
     "@types/aws-lambda": "^8.10.63",
     "@types/http-errors": "^1.8.0",

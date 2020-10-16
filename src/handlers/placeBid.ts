@@ -1,8 +1,11 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 import "source-map-support/register";
+import validator from "@middy/validator";
+import commonMiddleware from "../lib/commonMiddleware";
 import { HttpStatusCode } from "../enums/status";
 import service from "../domain/service";
 import io from "../io";
+import placeBidSchema from "../schemas/placeBidSchema";
 
 const placeBid: APIGatewayProxyHandler = async (event, _context) => {
   const pathParams = io.handler.pathParams(event);
@@ -12,4 +15,6 @@ const placeBid: APIGatewayProxyHandler = async (event, _context) => {
   return io.handler.returnSuccess(result, HttpStatusCode.OK);
 };
 
-export const handler = placeBid;
+export const handler = commonMiddleware(placeBid)
+  .use(validator({ inputSchema: placeBidSchema }));
+

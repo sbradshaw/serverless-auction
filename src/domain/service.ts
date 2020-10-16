@@ -72,7 +72,7 @@ export default (io: any) => ({
       throw new createError.InternalServerError(error);
     }
 
-    if (!auction) {
+    if (!auction.Item) {
       throw new createError.NotFound(`Auction item with id: ${id} not found`);
     }
 

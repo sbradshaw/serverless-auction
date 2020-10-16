@@ -1,8 +1,11 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 import "source-map-support/register";
+import validator from "@middy/validator";
+import commonMiddleware from "../lib/commonMiddleware";
 import { HttpStatusCode } from "../enums/status";
 import service from "../domain/service";
 import io from "../io";
+import createAuctionSchema from "../schemas/createAuctionSchema";
 
 const createAuction: APIGatewayProxyHandler = async (
   event,
@@ -14,4 +17,5 @@ const createAuction: APIGatewayProxyHandler = async (
   return io.handler.returnSuccess(result, HttpStatusCode.CREATED);
 };
 
-export const handler = createAuction;
+export const handler = commonMiddleware(createAuction)
+  .use(validator({ inputSchema: createAuctionSchema }));

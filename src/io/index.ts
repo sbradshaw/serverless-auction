@@ -12,7 +12,7 @@ export const dynamo = {
 };
 
 export const handler = {
-  input: (event: { body: string }) => JSON.parse(event.body),
+  input: (event: { body: any; }) => event.body,
   pathParams: (event: { pathParameters: any }) => event.pathParameters,
   queryStringParams: (event: { queryStringParameters: any }) =>
     event.queryStringParameters,
