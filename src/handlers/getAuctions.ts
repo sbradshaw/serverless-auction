@@ -7,7 +7,7 @@ import service from "../domain/service";
 import io from "../io";
 import getAuctionsSchema from "../schemas/getAuctionsSchema";
 
-const getAuctions: APIGatewayProxyHandler = async (event, _context) => {
+const getAuctions: APIGatewayProxyHandler = async (event) => {
   const queryStringParams = io.handler.queryStringParams(event);
   const result = await service(io).getAuctions(queryStringParams);
 

@@ -4,7 +4,7 @@ import { HttpStatusCode } from "../enums/status";
 import service from "../domain/service";
 import io from "../io";
 
-const processAuctions: APIGatewayProxyHandler = async (_context) => {
+const processAuctions: APIGatewayProxyHandler = async () => {
   const endedAuctions = await service(io).getEndedAuctions();
 
   await Promise.all(

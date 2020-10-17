@@ -9,7 +9,6 @@ import createAuctionSchema from "../schemas/createAuctionSchema";
 
 const createAuction: APIGatewayProxyHandler = async (
   event,
-  _context,
 ) => {
   const input = io.handler.input(event);
   const result = await service(io).createAuction(input);
