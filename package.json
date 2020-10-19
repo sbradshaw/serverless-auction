@@ -8,7 +8,9 @@
     "test:ci": "jest --ci --colors --coverage --passWithNoTests",
     "lint": "eslint -c .eslintrc.js --ext .ts .",
     "deploy": "sls deploy -v",
-    "deploy-fn": "sls deploy function -f $FUNCTION"
+    "deploy-fn": "sls deploy function -f $FUNCTION",
+    "mock-fn": "sls invoke -f $FUNCTION -p src/mocks/$FUNCTION-event.json -l",
+    "mock-fn-local": "sls invoke local -f $FUNCTION -p src/mocks/$FUNCTION-event.json"
   },
   "dependencies": {
     "@middy/core": "^1.4.0",
