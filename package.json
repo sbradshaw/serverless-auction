@@ -10,7 +10,8 @@
     "deploy": "sls deploy -v",
     "deploy-fn": "sls deploy function -f $FUNCTION",
     "mock-fn": "sls invoke -f $FUNCTION -p src/mocks/$FUNCTION-event.json -l",
-    "mock-fn-local": "sls invoke local -f $FUNCTION -p src/mocks/$FUNCTION-event.json"
+    "mock-fn-local": "sls invoke local -f $FUNCTION -p src/mocks/$FUNCTION-event.json",
+    "tail-fn": "sls logs -f $FUNCTION -t"
   },
   "dependencies": {
     "@middy/core": "^1.4.0",
