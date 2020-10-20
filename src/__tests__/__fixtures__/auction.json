@@ -1,0 +1,22 @@
+{
+  "open": {
+    "createdAt": "2020-10-19T18:57:39.770Z",
+    "highestBid": {
+      "amount": "0"
+    },
+    "endingAt": "2020-10-19T19:57:39.770Z",
+    "id": "3d165f82-45d6-4fdc-be27-3c3e427aabf7",
+    "status": "open",
+    "title": "Open Auction Item"
+  },
+  "closed": {
+    "createdAt": "2020-10-20T00:40:59.865Z",
+    "endingAt": "2020-10-20T01:40:59.865Z",
+    "highestBid": {
+      "amount": "42"
+    },
+    "id": "46fbacd1-e0c3-4514-8dbc-69e0e3c21dfa",
+    "status": "closed",
+    "title": "Closed Auction Item"
+  }
+}

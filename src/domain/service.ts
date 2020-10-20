@@ -1,22 +1,25 @@
 import { v4 as uuid } from "uuid";
-import config from "../../config";
 import createError from "http-errors";
+import config from "../../config";
+import { IAuction } from "../interfaces/IAuction";
 
 export default (io: any) => ({
-  createAuction: async (data: { title: any }) => {
+  createAuction: async (data: {
+    title: string;
+  }): Promise<IAuction | undefined> => {
     const { title } = data;
     const now = new Date();
     const endDate = new Date();
     endDate.setHours(now.getHours() + config.expiryOffset);
 
-    const auction = {
+    const auction: IAuction = {
       id: uuid(),
       title,
       status: "open",
       createdAt: now.toISOString(),
       endingAt: endDate.toISOString(),
       highestBid: {
-        amount: 0,
+        amount: "0",
       },
     };
     const params = {
@@ -33,7 +36,9 @@ export default (io: any) => ({
 
     return auction;
   },
-  getAuctions: async (queryStringParams: { status: any }) => {
+  getAuctions: async (queryStringParams: {
+    status: any;
+  }): Promise<any | undefined> => {
     const { status } = queryStringParams;
     const params = {
       TableName: config.tableName,
@@ -57,7 +62,7 @@ export default (io: any) => ({
 
     return auctions.Items;
   },
-  getAuction: async (pathParams: { id: any }) => {
+  getAuction: async (pathParams: { id: string }): Promise<any | undefined> => {
     const { id } = pathParams;
     const params = {
       TableName: config.tableName,
@@ -78,7 +83,10 @@ export default (io: any) => ({
 
     return auction.Item;
   },
-  placeBid: async (pathParams: { id: any }, data: { amount: any }) => {
+  placeBid: async (
+    pathParams: { id: any },
+    data: { amount: any }
+  ): Promise<any | undefined> => {
     const { id } = pathParams;
     const { amount } = data;
     const params = {
@@ -103,7 +111,7 @@ export default (io: any) => ({
 
     if (amount <= auction.Item.highestBid.amount) {
       throw new createError.Forbidden(
-        `The bid must be higher than ${auction.Item.highestBid.amount}`,
+        `The bid must be higher than ${auction.Item.highestBid.amount}`
       );
     }
 
@@ -141,7 +149,7 @@ export default (io: any) => ({
 
     return auctions.Items;
   },
-  closeAuction: async (data: { id: any }) => {
+  closeAuction: async (data: { id: any }): Promise<any | undefined> => {
     const { id } = data;
     let closedAuctionItems: any;
 
