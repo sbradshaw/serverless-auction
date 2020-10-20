@@ -12,7 +12,7 @@ describe("Domain Service getAuction", () => {
   beforeAll(() => {
     mockedFunction = jest.fn(() => {
       return {
-        Item: <IAuction>fixtures.closed,
+        Item: <IAuction>fixtures.closedAuction,
       };
     });
 
@@ -32,7 +32,7 @@ describe("Domain Service getAuction", () => {
     item = mockedFunction.mock.results[0].value.Item;
   });
 
-  it("should have the expected auction length", async () => {
+  it("should have the expected auction mocked call length", async () => {
     expect(mockedFunction.mock.calls).toHaveLength(1);
   });
 

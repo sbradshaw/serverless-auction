@@ -37,8 +37,8 @@ export default (io: any) => ({
     return auction;
   },
   getAuctions: async (queryStringParams: {
-    status: any;
-  }): Promise<any | undefined> => {
+    status: string;
+  }): Promise<Array<IAuction> | undefined> => {
     const { status } = queryStringParams;
     const params = {
       TableName: config.tableName,
@@ -62,7 +62,9 @@ export default (io: any) => ({
 
     return auctions.Items;
   },
-  getAuction: async (pathParams: { id: string }): Promise<any | undefined> => {
+  getAuction: async (pathParams: {
+    id: string;
+  }): Promise<IAuction | undefined> => {
     const { id } = pathParams;
     const params = {
       TableName: config.tableName,
