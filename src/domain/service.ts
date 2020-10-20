@@ -51,7 +51,7 @@ export default (io: any) => ({
         "#status": "status",
       },
     };
-    let auctions: { Items: any };
+    let auctions: { Items: IAuction[] | PromiseLike<IAuction[]> };
 
     try {
       auctions = await io.db.call("query", params);
@@ -70,7 +70,7 @@ export default (io: any) => ({
       TableName: config.tableName,
       Key: { id },
     };
-    let auction: { Item: any };
+    let auction: { Item: IAuction | PromiseLike<IAuction> };
 
     try {
       auction = await io.db.call("get", params);
