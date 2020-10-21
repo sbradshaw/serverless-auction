@@ -30,7 +30,6 @@ export default (io: any) => ({
     try {
       await io.db.call("put", params);
     } catch (error) {
-      console.log(error);
       throw new createError.InternalServerError(error);
     }
 

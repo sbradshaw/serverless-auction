@@ -8,8 +8,9 @@ describe("Domain Service createAuction", () => {
   let io: { db: { call: jest.Mock } };
   let input: { title: string };
   let value: IAuction;
+  let errorResult: string;
 
-  beforeAll(() => {
+  beforeEach(async () => {
     mockedFunction = jest.fn(() => {
       return [<IAuction>fixtures.openAuction];
     });
@@ -21,11 +22,9 @@ describe("Domain Service createAuction", () => {
     };
 
     input = {
-      title: "Open Auction Item",
+      title: "Auction Item",
     };
-  });
 
-  beforeEach(async () => {
     await service(io).createAuction(input);
     value = mockedFunction.mock.results[0].value[0];
   });
@@ -41,7 +40,7 @@ describe("Domain Service createAuction", () => {
   });
 
   it("should have the expected auction title", async () => {
-    const title = "Open Auction Item";
+    const title = "Auction Item";
 
     expect(value.title).toEqual(title);
   });
@@ -61,5 +60,25 @@ describe("Domain Service createAuction", () => {
 
   it("should have a highest bid amount set to zero when created", async () => {
     expect(value.highestBid.amount).toEqual("0");
+  });
+
+  it("should throw InternalServerError on create a new auction item failure", async () => {
+    const mockedFuntionError = jest.fn(() => {
+      throw Error("error message");
+    });
+
+    io = {
+      db: {
+        call: mockedFuntionError,
+      },
+    };
+
+    try {
+      await service(io).createAuction(input);
+    } catch (error) {
+      errorResult = error.toString();
+    }
+
+    expect(errorResult).toContain("InternalServerError");
   });
 });

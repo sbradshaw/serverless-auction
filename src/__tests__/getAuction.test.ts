@@ -43,7 +43,7 @@ describe("Domain Service getAuction", () => {
   });
 
   it("should have the expected auction title", async () => {
-    const title = "Closed Auction Item";
+    const title = "Auction Item";
 
     expect(item.title).toEqual(title);
   });
