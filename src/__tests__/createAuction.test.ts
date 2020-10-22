@@ -63,13 +63,13 @@ describe("Domain Service createAuction", () => {
   });
 
   it("should throw InternalServerError on create a new auction item failure", async () => {
-    const mockedFuntionError = jest.fn(() => {
-      throw Error("error message");
+    const mockedFunctionError = jest.fn(() => {
+      throw Error("DynamoDB Error: Put Auction Item");
     });
 
     io = {
       db: {
-        call: mockedFuntionError,
+        call: mockedFunctionError,
       },
     };
 

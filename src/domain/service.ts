@@ -57,7 +57,6 @@ export default (io: { db: { call: any } }) => ({
     try {
       auctions = await io.db.call("query", params);
     } catch (error) {
-      console.log(error);
       throw new createError.InternalServerError(error);
     }
 
@@ -76,7 +75,6 @@ export default (io: { db: { call: any } }) => ({
     try {
       auction = await io.db.call("get", params);
     } catch (error) {
-      console.log(error);
       throw new createError.InternalServerError(error);
     }
 
@@ -146,7 +144,6 @@ export default (io: { db: { call: any } }) => ({
     try {
       auctions = await io.db.call("query", params);
     } catch (error) {
-      console.log(error);
       throw new createError.InternalServerError(error);
     }
 

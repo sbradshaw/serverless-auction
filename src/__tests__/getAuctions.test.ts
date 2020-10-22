@@ -8,8 +8,9 @@ describe("Domain Service getAuctions", () => {
   let io: { db: { call: jest.Mock } };
   let input: { status: string };
   let items: Array<IAuction>;
+  let errorResult: string;
 
-  beforeAll(() => {
+  beforeEach(async () => {
     mockedFunction = jest.fn(() => {
       return {
         Items: fixtures.multipleAuctions,
@@ -25,9 +26,7 @@ describe("Domain Service getAuctions", () => {
     input = {
       status: "closed",
     };
-  });
 
-  beforeEach(async () => {
     await service(io).getAuctions(input);
     items = mockedFunction.mock.results[0].value.Items;
   });
@@ -93,6 +92,26 @@ describe("Domain Service getAuctions", () => {
 
     it("should have a highest bid amount matching the last auction item", async () => {
       expect(items[3].highestBid.amount).toEqual("49");
+    });
+
+    it("should throw InternalServerError on auction items query failure", async () => {
+      const mockedFuntionError = jest.fn(() => {
+        throw Error("DynamoDB Error: Query Auction Items");
+      });
+
+      io = {
+        db: {
+          call: mockedFuntionError,
+        },
+      };
+
+      try {
+        await service(io).getAuctions(input);
+      } catch (error) {
+        errorResult = error.toString();
+      }
+
+      expect(errorResult).toContain("InternalServerError");
     });
   });
 });
