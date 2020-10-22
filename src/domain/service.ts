@@ -2,8 +2,9 @@ import { v4 as uuid } from "uuid";
 import createError from "http-errors";
 import config from "../../config";
 import { IAuction } from "../interfaces/IAuction";
+import { DynamoDB } from "aws-sdk";
 
-export default (io: any) => ({
+export default (io: { db: { call: any } }) => ({
   createAuction: async (data: {
     title: string;
   }): Promise<IAuction | undefined> => {
@@ -22,7 +23,7 @@ export default (io: any) => ({
         amount: "0",
       },
     };
-    const params = {
+    const params: DynamoDB.DocumentClient.PutItemInput = {
       TableName: config.tableName,
       Item: auction,
     };
@@ -39,7 +40,7 @@ export default (io: any) => ({
     status: string;
   }): Promise<Array<IAuction> | undefined> => {
     const { status } = queryStringParams;
-    const params = {
+    const params: DynamoDB.DocumentClient.QueryInput = {
       TableName: config.tableName,
       IndexName: "statusAndEndDate",
       KeyConditionExpression: "#status = :status",
@@ -50,6 +51,7 @@ export default (io: any) => ({
         "#status": "status",
       },
     };
+
     let auctions: { Items: IAuction[] | PromiseLike<IAuction[]> };
 
     try {
@@ -65,7 +67,7 @@ export default (io: any) => ({
     id: string;
   }): Promise<IAuction | undefined> => {
     const { id } = pathParams;
-    const params = {
+    const params: DynamoDB.DocumentClient.GetItemInput = {
       TableName: config.tableName,
       Key: { id },
     };
@@ -85,8 +87,8 @@ export default (io: any) => ({
     return auction.Item;
   },
   placeBid: async (
-    pathParams: { id: any },
-    data: { amount: any }
+    pathParams: { id: string },
+    data: { amount: string }
   ): Promise<any | undefined> => {
     const { id } = pathParams;
     const { amount } = data;
@@ -125,7 +127,7 @@ export default (io: any) => ({
 
     return auctionUpdate.Attributes;
   },
-  getEndedAuctions: async () => {
+  getEndedAuctions: async (): Promise<Array<IAuction> | undefined> => {
     const now = new Date();
     const params = {
       TableName: config.tableName,
@@ -139,7 +141,7 @@ export default (io: any) => ({
         "#status": "status",
       },
     };
-    let auctions: { Items: any };
+    let auctions: { Items: IAuction[] | PromiseLike<IAuction[]> };
 
     try {
       auctions = await io.db.call("query", params);
@@ -150,7 +152,7 @@ export default (io: any) => ({
 
     return auctions.Items;
   },
-  closeAuction: async (data: { id: any }): Promise<any | undefined> => {
+  closeAuction: async (data: { id: string }) => {
     const { id } = data;
     let closedAuctionItems: any;
 

@@ -6,19 +6,19 @@ const dbClient: DynamoDB.DocumentClient = new DynamoDB.DocumentClient({
 });
 
 export const dynamo = {
-  call: async (action: string, params: any) => {
+  call: async (action: string, params: unknown) => {
     return await dbClient[action](params).promise();
   },
 };
 
 export const handler = {
-  input: (event: { body: any; }) => event.body,
+  input: (event: { body: any }) => event.body,
   pathParams: (event: { pathParameters: any }) => event.pathParameters,
   queryStringParams: (event: { queryStringParameters: any }) =>
     event.queryStringParameters,
-  returnSuccess: (x: any, status: number) => ({
+  returnSuccess: (result: any, status: number) => ({
     statusCode: status,
-    body: JSON.stringify(x),
+    body: JSON.stringify(result),
   }),
 };
 

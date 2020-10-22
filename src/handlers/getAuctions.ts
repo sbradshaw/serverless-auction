@@ -14,5 +14,6 @@ const getAuctions: APIGatewayProxyHandler = async (event) => {
   return io.handler.returnSuccess(result, HttpStatusCode.OK);
 };
 
-export const handler = commonMiddleware(getAuctions)
-  .use(validator({ inputSchema: getAuctionsSchema }));
+export const handler = commonMiddleware(getAuctions).use(
+  validator({ inputSchema: getAuctionsSchema })
+);

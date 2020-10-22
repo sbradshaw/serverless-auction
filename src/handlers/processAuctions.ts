@@ -9,13 +9,13 @@ const processAuctions: APIGatewayProxyHandler = async () => {
 
   await Promise.all(
     endedAuctions.map(
-      async (auction: any) => await service(io).closeAuction(auction),
-    ),
+      async (auction: { id: string }) => await service(io).closeAuction(auction)
+    )
   );
 
   return io.handler.returnSuccess(
     `ended auctions: ${endedAuctions.length}`,
-    HttpStatusCode.OK,
+    HttpStatusCode.OK
   );
 };
 
