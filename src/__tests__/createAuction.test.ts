@@ -17,12 +17,12 @@ describe("Domain Service createAuction", () => {
 
     io = {
       db: {
-        call: mockedFunction,
-      },
+        call: mockedFunction
+      }
     };
 
     input = {
-      title: "Auction Item",
+      title: "Auction Item"
     };
 
     await service(io).createAuction(input);
@@ -69,8 +69,8 @@ describe("Domain Service createAuction", () => {
 
     io = {
       db: {
-        call: mockedFunctionError,
-      },
+        call: mockedFunctionError
+      }
     };
 
     try {

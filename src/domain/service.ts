@@ -20,12 +20,12 @@ export default (io: { db: { call: any } }) => ({
       createdAt: now.toISOString(),
       endingAt: endDate.toISOString(),
       highestBid: {
-        amount: "0",
-      },
+        amount: "0"
+      }
     };
     const params: DynamoDB.DocumentClient.PutItemInput = {
       TableName: config.tableName,
-      Item: auction,
+      Item: auction
     };
 
     try {
@@ -45,11 +45,11 @@ export default (io: { db: { call: any } }) => ({
       IndexName: "statusAndEndDate",
       KeyConditionExpression: "#status = :status",
       ExpressionAttributeValues: {
-        ":status": status,
+        ":status": status
       },
       ExpressionAttributeNames: {
-        "#status": "status",
-      },
+        "#status": "status"
+      }
     };
 
     let result: { Items: IAuction[] | PromiseLike<IAuction[]> };
@@ -68,7 +68,7 @@ export default (io: { db: { call: any } }) => ({
     const { id } = pathParams;
     const params: DynamoDB.DocumentClient.GetItemInput = {
       TableName: config.tableName,
-      Key: { id },
+      Key: { id }
     };
     let result: { Item: IAuction | PromiseLike<IAuction> };
 
@@ -95,15 +95,15 @@ export default (io: { db: { call: any } }) => ({
       Key: { id },
       UpdateExpression: "set highestBid.amount = :amount",
       ExpressionAttributeValues: {
-        ":amount": amount,
+        ":amount": amount
       },
-      ReturnValues: "ALL_NEW",
+      ReturnValues: "ALL_NEW"
     };
     let auctionUpdate: any;
 
     const auction = await io.db.call("get", {
       TableName: config.tableName,
-      Key: { id },
+      Key: { id }
     });
 
     if (auction.Item.status !== "open") {
@@ -133,11 +133,11 @@ export default (io: { db: { call: any } }) => ({
       KeyConditionExpression: "#status = :status AND endingAt <= :now",
       ExpressionAttributeValues: {
         ":status": "open",
-        ":now": now.toISOString(),
+        ":now": now.toISOString()
       },
       ExpressionAttributeNames: {
-        "#status": "status",
-      },
+        "#status": "status"
+      }
     };
     let result: { Items: IAuction[] | PromiseLike<IAuction[]> };
 
@@ -158,11 +158,11 @@ export default (io: { db: { call: any } }) => ({
       Key: { id },
       UpdateExpression: "set #status = :status",
       ExpressionAttributeValues: {
-        ":status": "closed",
+        ":status": "closed"
       },
       ExpressionAttributeNames: {
-        "#status": "status",
-      },
+        "#status": "status"
+      }
     };
 
     try {
@@ -172,5 +172,5 @@ export default (io: { db: { call: any } }) => ({
     }
 
     return result.Item;
-  },
+  }
 });

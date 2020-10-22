@@ -12,14 +12,14 @@ describe("Domain Service getEndedAuctions", () => {
   beforeEach(async () => {
     mockedFunction = jest.fn(() => {
       return {
-        Items: fixtures.multipleAuctions,
+        Items: fixtures.multipleAuctions
       };
     });
 
     io = {
       db: {
-        call: mockedFunction,
-      },
+        call: mockedFunction
+      }
     };
 
     await service(io).getEndedAuctions();
@@ -41,8 +41,8 @@ describe("Domain Service getEndedAuctions", () => {
 
     io = {
       db: {
-        call: mockedFunctionError,
-      },
+        call: mockedFunctionError
+      }
     };
 
     try {

@@ -9,7 +9,7 @@
     "target": "es2017",
     "outDir": "lib",
     "esModuleInterop": true,
-    "resolveJsonModule": true,
+    "resolveJsonModule": true
   },
   "include": ["./**/*.ts"],
   "exclude": [

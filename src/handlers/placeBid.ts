@@ -15,6 +15,6 @@ const placeBid: APIGatewayProxyHandler = async (event) => {
   return io.handler.returnSuccess(result, HttpStatusCode.OK);
 };
 
-export const handler = commonMiddleware(placeBid)
-  .use(validator({ inputSchema: placeBidSchema }));
-
+export const handler = commonMiddleware(placeBid).use(
+  validator({ inputSchema: placeBidSchema })
+);

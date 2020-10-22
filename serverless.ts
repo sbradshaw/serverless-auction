@@ -2,14 +2,14 @@ import { Serverless } from "serverless/aws";
 
 const serverlessConfiguration: Serverless = {
   service: {
-    name: "serverless-auction",
+    name: "serverless-auction"
   },
   frameworkVersion: ">=1.72.0",
   custom: {
     webpack: {
       webpackConfig: "./webpack.config.js",
-      includeModules: true,
-    },
+      includeModules: true
+    }
   },
   plugins: ["serverless-webpack", "serverless-pseudo-parameters"],
   provider: {
@@ -23,7 +23,7 @@ const serverlessConfiguration: Serverless = {
         Effect: "Allow",
         Resource: [
           "arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/auctions-table",
-          "arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/auctions-table/index/statusAndEndDate",
+          "arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/auctions-table/index/statusAndEndDate"
         ],
         Action: [
           "dynamoDb:Query",
@@ -31,16 +31,16 @@ const serverlessConfiguration: Serverless = {
           "dynamoDb:GetItem",
           "dynamoDb:PutItem",
           "dynamoDb:UpdateItem",
-          "dynamoDb:DeleteItem",
-        ],
-      },
+          "dynamoDb:DeleteItem"
+        ]
+      }
     ],
     apiGateway: {
-      minimumCompressionSize: 1024,
+      minimumCompressionSize: 1024
     },
     environment: {
-      AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
-    },
+      AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
+    }
   },
   resources: {
     Resources: {
@@ -52,22 +52,22 @@ const serverlessConfiguration: Serverless = {
           AttributeDefinitions: [
             {
               AttributeName: "id",
-              AttributeType: "S",
+              AttributeType: "S"
             },
             {
               AttributeName: "status",
-              AttributeType: "S",
+              AttributeType: "S"
             },
             {
               AttributeName: "endingAt",
-              AttributeType: "S",
-            },
+              AttributeType: "S"
+            }
           ],
           KeySchema: [
             {
               AttributeName: "id",
-              KeyType: "HASH",
-            },
+              KeyType: "HASH"
+            }
           ],
           GlobalSecondaryIndexes: [
             {
@@ -75,21 +75,21 @@ const serverlessConfiguration: Serverless = {
               KeySchema: [
                 {
                   AttributeName: "status",
-                  KeyType: "HASH",
+                  KeyType: "HASH"
                 },
                 {
                   AttributeName: "endingAt",
-                  KeyType: "RANGE",
-                },
+                  KeyType: "RANGE"
+                }
               ],
               Projection: {
-                ProjectionType: "ALL",
-              },
-            },
-          ],
-        },
-      },
-    },
+                ProjectionType: "ALL"
+              }
+            }
+          ]
+        }
+      }
+    }
   },
   functions: {
     createAuction: {
@@ -98,10 +98,10 @@ const serverlessConfiguration: Serverless = {
         {
           http: {
             method: "post",
-            path: "/auction",
-          },
-        },
-      ],
+            path: "/auction"
+          }
+        }
+      ]
     },
     getAuctions: {
       handler: "src/handlers/getAuctions.handler",
@@ -109,10 +109,10 @@ const serverlessConfiguration: Serverless = {
         {
           http: {
             method: "get",
-            path: "/auctions",
-          },
-        },
-      ],
+            path: "/auctions"
+          }
+        }
+      ]
     },
     getAuction: {
       handler: "src/handlers/getAuction.handler",
@@ -120,10 +120,10 @@ const serverlessConfiguration: Serverless = {
         {
           http: {
             method: "get",
-            path: "/auction/{id}",
-          },
-        },
-      ],
+            path: "/auction/{id}"
+          }
+        }
+      ]
     },
     placeBid: {
       handler: "src/handlers/placeBid.handler",
@@ -131,20 +131,20 @@ const serverlessConfiguration: Serverless = {
         {
           http: {
             method: "patch",
-            path: "/auction/{id}/bid",
-          },
-        },
-      ],
+            path: "/auction/{id}/bid"
+          }
+        }
+      ]
     },
     processAuctions: {
-      handler: "src/handlers/processAuctions.handler",
+      handler: "src/handlers/processAuctions.handler"
       // events: [
       //   {
       //     schedule: "rate(1 minute)",
       //   },
       // ],
-    },
-  },
+    }
+  }
 };
 
 module.exports = serverlessConfiguration;

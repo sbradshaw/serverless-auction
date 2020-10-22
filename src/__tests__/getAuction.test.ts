@@ -13,18 +13,18 @@ describe("Domain Service getAuction", () => {
   beforeEach(async () => {
     mockedFunction = jest.fn(() => {
       return {
-        Item: <IAuction>fixtures.closedAuction,
+        Item: <IAuction>fixtures.closedAuction
       };
     });
 
     io = {
       db: {
-        call: mockedFunction,
-      },
+        call: mockedFunction
+      }
     };
 
     input = {
-      id: "46fbacd1-e0c3-4514-8dbc-69e0e3c21dfa",
+      id: "46fbacd1-e0c3-4514-8dbc-69e0e3c21dfa"
     };
 
     await service(io).getAuction(input);
@@ -71,8 +71,8 @@ describe("Domain Service getAuction", () => {
 
     io = {
       db: {
-        call: mockedFunctionError,
-      },
+        call: mockedFunctionError
+      }
     };
 
     try {
@@ -91,8 +91,8 @@ describe("Domain Service getAuction", () => {
 
     io = {
       db: {
-        call: mockedFunctionError,
-      },
+        call: mockedFunctionError
+      }
     };
 
     try {

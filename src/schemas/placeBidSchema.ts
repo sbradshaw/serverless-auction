@@ -4,15 +4,13 @@ const schema = {
       type: "object",
       properties: {
         amount: {
-          type: "string",
-        },
+          type: "string"
+        }
       },
-      required: ["amount"],
-    },
+      required: ["amount"]
+    }
   },
-  required: [
-    "body",
-  ],
+  required: ["body"]
 };
 
 export default schema;
