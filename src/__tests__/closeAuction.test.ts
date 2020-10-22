@@ -3,7 +3,7 @@ import service from "../domain/service";
 import { IAuction } from "../interfaces/IAuction";
 import fixtures from "./__fixtures__/auction.json";
 
-describe("Domain Service getAuction", () => {
+describe("Domain Service closeAuction", () => {
   let mockedFunction: jest.Mock;
   let io: { db: { call: jest.Mock } };
   let input: { id: string };
@@ -27,7 +27,7 @@ describe("Domain Service getAuction", () => {
       id: "46fbacd1-e0c3-4514-8dbc-69e0e3c21dfa",
     };
 
-    await service(io).getAuction(input);
+    await service(io).closeAuction(input);
     item = mockedFunction.mock.results[0].value.Item;
   });
 
@@ -66,7 +66,7 @@ describe("Domain Service getAuction", () => {
 
   it("should throw InternalServerError on get auction item failure", async () => {
     const mockedFunctionError = jest.fn(() => {
-      throw Error("DynamoDB Error: Get Auction Item");
+      throw Error("DynamoDB Error: Update Auction Item");
     });
 
     io = {
@@ -76,33 +76,11 @@ describe("Domain Service getAuction", () => {
     };
 
     try {
-      await service(io).getAuction(input);
+      await service(io).closeAuction(input);
     } catch (error) {
       errorResult = error.toString();
     }
 
     expect(errorResult).toContain("InternalServerError");
-  });
-
-  it("should throw a NotFoundError when an auction item is not found", async () => {
-    const mockedFunctionError = jest.fn(() => {
-      return {};
-    });
-
-    io = {
-      db: {
-        call: mockedFunctionError,
-      },
-    };
-
-    try {
-      await service(io).getAuction(input);
-    } catch (error) {
-      errorResult = error.toString();
-    }
-
-    expect(errorResult).toContain(
-      `NotFoundError: Auction item with id: ${input.id} not found`
-    );
   });
 });

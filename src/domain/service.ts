@@ -52,15 +52,15 @@ export default (io: { db: { call: any } }) => ({
       },
     };
 
-    let auctions: { Items: IAuction[] | PromiseLike<IAuction[]> };
+    let result: { Items: IAuction[] | PromiseLike<IAuction[]> };
 
     try {
-      auctions = await io.db.call("query", params);
+      result = await io.db.call("query", params);
     } catch (error) {
       throw new createError.InternalServerError(error);
     }
 
-    return auctions.Items;
+    return result.Items;
   },
   getAuction: async (pathParams: {
     id: string;
@@ -70,19 +70,19 @@ export default (io: { db: { call: any } }) => ({
       TableName: config.tableName,
       Key: { id },
     };
-    let auction: { Item: IAuction | PromiseLike<IAuction> };
+    let result: { Item: IAuction | PromiseLike<IAuction> };
 
     try {
-      auction = await io.db.call("get", params);
+      result = await io.db.call("get", params);
     } catch (error) {
       throw new createError.InternalServerError(error);
     }
 
-    if (!auction.Item) {
+    if (!result.Item) {
       throw new createError.NotFound(`Auction item with id: ${id} not found`);
     }
 
-    return auction.Item;
+    return result.Item;
   },
   placeBid: async (
     pathParams: { id: string },
@@ -139,19 +139,19 @@ export default (io: { db: { call: any } }) => ({
         "#status": "status",
       },
     };
-    let auctions: { Items: IAuction[] | PromiseLike<IAuction[]> };
+    let result: { Items: IAuction[] | PromiseLike<IAuction[]> };
 
     try {
-      auctions = await io.db.call("query", params);
+      result = await io.db.call("query", params);
     } catch (error) {
       throw new createError.InternalServerError(error);
     }
 
-    return auctions.Items;
+    return result.Items;
   },
-  closeAuction: async (data: { id: string }) => {
+  closeAuction: async (data: { id: string }): Promise<IAuction | undefined> => {
     const { id } = data;
-    let closedAuctionItems: any;
+    let result: { Item: IAuction | PromiseLike<IAuction> };
 
     const params = {
       TableName: config.tableName,
@@ -166,12 +166,11 @@ export default (io: { db: { call: any } }) => ({
     };
 
     try {
-      closedAuctionItems = await io.db.call("update", params);
+      result = await io.db.call("update", params);
     } catch (error) {
-      console.log(error);
       throw new createError.InternalServerError(error);
     }
 
-    return closedAuctionItems.Attributes;
+    return result.Item;
   },
 });
