@@ -5,7 +5,7 @@
   "main": "handler.js",
   "scripts": {
     "test": "jest --watchAll --colors",
-    "test:ci": "jest --ci --colors --coverage --passWithNoTests",
+    "test:ci": "jest --ci --colors --coverage",
     "lint": "eslint -c .eslintrc.js --ext .ts .",
     "deploy": "sls deploy -v",
     "deploy-fn": "sls deploy function -f $FUNCTION",

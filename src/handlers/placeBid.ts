@@ -8,11 +8,12 @@ import io from "../io";
 import placeBidSchema from "../schemas/placeBidSchema";
 
 const placeBid: APIGatewayProxyHandler = async (event) => {
-  const pathParams = io.handler.pathParams(event);
-  const input = io.handler.input(event);
-  const result = await service(io).placeBid(pathParams, input);
+  const result = await service(io).placeBid(event.pathParameters, event.body);
 
-  return io.handler.returnSuccess(result, HttpStatusCode.OK);
+  return {
+    statusCode: HttpStatusCode.OK,
+    body: JSON.stringify(result)
+  };
 };
 
 export const handler = commonMiddleware(placeBid).use(

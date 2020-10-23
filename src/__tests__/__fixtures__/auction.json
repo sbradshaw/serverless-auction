@@ -5,9 +5,19 @@
     "highestBid": {
       "amount": "0"
     },
-    "id": "3d165f82-45d6-4fdc-be27-3c3e427aabf7",
+    "id": "12345",
     "status": "open",
     "title": "Auction Item"
+  },
+  "openAuctionWithBid": {
+    "createdAt": "2020-10-19T18:57:39.770Z",
+    "endingAt": "2020-10-19T19:57:39.770Z",
+    "highestBid": {
+      "amount": "42"
+    },
+    "id": "77777",
+    "status": "open",
+    "title": "Auction Item With Bid"
   },
   "closedAuction": {
     "createdAt": "2020-10-20T00:40:59.865Z",
@@ -15,7 +25,7 @@
     "highestBid": {
       "amount": "42"
     },
-    "id": "46fbacd1-e0c3-4514-8dbc-69e0e3c21dfa",
+    "id": "67890",
     "status": "closed",
     "title": "Auction Item"
   },
@@ -26,7 +36,7 @@
       "highestBid": {
         "amount": "0"
       },
-      "id": "8bf87ee5-0929-4166-8a19-27830dab0c4e",
+      "id": "11111",
       "status": "closed",
       "title": "Closed Auction Item 1"
     },
@@ -36,7 +46,7 @@
       "highestBid": {
         "amount": "42"
       },
-      "id": "3f5d2725-bc87-4e09-b538-ee3466bbb0a7",
+      "id": "22222",
       "status": "closed",
       "title": "Closed Auction Item 2"
     },
@@ -46,7 +56,7 @@
       "highestBid": {
         "amount": "42"
       },
-      "id": "b58e4e23-0c62-4d8c-85b5-3123cb6e370f",
+      "id": "33333",
       "status": "closed",
       "title": "Closed Auction Item 3"
     },
@@ -56,7 +66,7 @@
       "highestBid": {
         "amount": "49"
       },
-      "id": "23dcc152-0fcd-49bb-a518-4c02d8d8bc37",
+      "id": "44444",
       "status": "closed",
       "title": "Closed Auction Item 4"
     }

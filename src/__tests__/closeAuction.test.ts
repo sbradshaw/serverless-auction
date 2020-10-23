@@ -36,7 +36,7 @@ describe("Domain Service closeAuction", () => {
   });
 
   it("should have the expected auction id", async () => {
-    const id = "46fbacd1-e0c3-4514-8dbc-69e0e3c21dfa";
+    const id = "67890";
 
     expect(item.id).toEqual(id);
   });

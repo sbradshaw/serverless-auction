@@ -40,9 +40,29 @@ describe("Domain Service getAuctions", () => {
   });
 
   it("should have the expected auction id for the first array item", async () => {
-    const id = "8bf87ee5-0929-4166-8a19-27830dab0c4e";
+    const id = "11111";
 
     expect(items[0].id).toEqual(id);
+  });
+
+  it("should throw InternalServerError on auction items query failure", async () => {
+    const mockedFuntionError = jest.fn(() => {
+      throw Error("DynamoDB Error: Query Auction Items");
+    });
+
+    io = {
+      db: {
+        call: mockedFuntionError
+      }
+    };
+
+    try {
+      await service(io).getAuctions(input);
+    } catch (error) {
+      errorResult = error.toString();
+    }
+
+    expect(errorResult).toContain("InternalServerError");
   });
 
   describe("First Auction Item", () => {
@@ -92,26 +112,6 @@ describe("Domain Service getAuctions", () => {
 
     it("should have a highest bid amount matching the last auction item", async () => {
       expect(items[3].highestBid.amount).toEqual("49");
-    });
-
-    it("should throw InternalServerError on auction items query failure", async () => {
-      const mockedFuntionError = jest.fn(() => {
-        throw Error("DynamoDB Error: Query Auction Items");
-      });
-
-      io = {
-        db: {
-          call: mockedFuntionError
-        }
-      };
-
-      try {
-        await service(io).getAuctions(input);
-      } catch (error) {
-        errorResult = error.toString();
-      }
-
-      expect(errorResult).toContain("InternalServerError");
     });
   });
 });

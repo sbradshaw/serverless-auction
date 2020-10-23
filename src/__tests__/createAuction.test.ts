@@ -34,7 +34,7 @@ describe("Domain Service createAuction", () => {
   });
 
   it("should have the expected auction id", async () => {
-    const id = "3d165f82-45d6-4fdc-be27-3c3e427aabf7";
+    const id = "12345";
 
     expect(value.id).toEqual(id);
   });

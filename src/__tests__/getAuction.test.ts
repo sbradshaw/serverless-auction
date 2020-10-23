@@ -36,7 +36,7 @@ describe("Domain Service getAuction", () => {
   });
 
   it("should have the expected auction id", async () => {
-    const id = "46fbacd1-e0c3-4514-8dbc-69e0e3c21dfa";
+    const id = "67890";
 
     expect(item.id).toEqual(id);
   });
@@ -101,7 +101,7 @@ describe("Domain Service getAuction", () => {
       errorResult = error.toString();
     }
 
-    expect(errorResult).toContain(
+    expect(errorResult).toBe(
       `NotFoundError: Auction item with id: ${input.id} not found`
     );
   });

@@ -88,10 +88,10 @@ export default (io: { db: { call: any } }): any => ({
   placeBid: async (
     pathParams: { id: string },
     data: { amount: string }
-  ): Promise<any | undefined> => {
+  ): Promise<IAuction | undefined> => {
     const { id } = pathParams;
     const { amount } = data;
-    const params = {
+    const params: DynamoDB.DocumentClient.UpdateItemInput = {
       TableName: config.tableName,
       Key: { id },
       UpdateExpression: "set highestBid.amount = :amount",
@@ -100,31 +100,29 @@ export default (io: { db: { call: any } }): any => ({
       },
       ReturnValues: "ALL_NEW"
     };
-    let auctionUpdate: any;
 
     const auction = await io.db.call("get", {
       TableName: config.tableName,
       Key: { id }
     });
 
-    if (auction.Item.status !== "open") {
+    if (!auction.Item) {
+      throw new createError.NotFound(`Auction item with id: ${id} not found`);
+    }
+
+    if (auction.Item.status === "closed") {
       throw new createError.Forbidden(`You cannot bid on closed auction items`);
     }
 
-    if (amount <= auction.Item.highestBid.amount) {
+    if (parseInt(amount) <= parseInt(auction.Item.highestBid.amount)) {
       throw new createError.Forbidden(
         `The bid must be higher than ${auction.Item.highestBid.amount}`
       );
     }
 
-    try {
-      auctionUpdate = await io.db.call("update", params);
-    } catch (error) {
-      console.log(error);
-      throw new createError.InternalServerError(error);
-    }
+    const result = await io.db.call("update", params);
 
-    return auctionUpdate.Attributes;
+    return result;
   },
   getEndedAuctions: async (): Promise<Array<IAuction> | undefined> => {
     const now = new Date();
