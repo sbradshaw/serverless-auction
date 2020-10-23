@@ -11,7 +11,7 @@ describe("Domain Service getAuctions", () => {
   let errorResult: string;
 
   beforeEach(async () => {
-    mockedFunction = jest.fn(() => {
+    mockedFunction = jest.fn().mockImplementation(() => {
       return {
         Items: fixtures.multipleAuctions
       };

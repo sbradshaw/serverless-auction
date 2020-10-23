@@ -4,7 +4,8 @@ import config from "../../config";
 import { IAuction } from "../interfaces/IAuction";
 import { DynamoDB } from "aws-sdk";
 
-export default (io: { db: { call: any } }) => ({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default (io: { db: { call: any } }): any => ({
   createAuction: async (data: {
     title: string;
   }): Promise<IAuction | undefined> => {

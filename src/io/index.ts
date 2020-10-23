@@ -6,7 +6,7 @@ const dbClient: DynamoDB.DocumentClient = new DynamoDB.DocumentClient({
 });
 
 export const dynamo = {
-  call: async (action: string, params: unknown) => {
+  call: async (action: string, params: unknown): Promise<unknown> => {
     return await dbClient[action](params).promise();
   }
 };
