@@ -8,10 +8,12 @@ import io from "../io";
 import createAuctionSchema from "../schemas/createAuctionSchema";
 
 const createAuction: APIGatewayProxyHandler = async (event) => {
-  const input = io.handler.input(event);
-  const result = await service(io).createAuction(input);
+  const result = await service(io).createAuction(event.body);
 
-  return io.handler.returnSuccess(result, HttpStatusCode.CREATED);
+  return {
+    statusCode: HttpStatusCode.CREATED,
+    body: JSON.stringify(result)
+  };
 };
 
 export const handler = commonMiddleware(createAuction).use(

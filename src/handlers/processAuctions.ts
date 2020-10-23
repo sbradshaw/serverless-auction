@@ -13,10 +13,10 @@ const processAuctions: APIGatewayProxyHandler = async () => {
     )
   );
 
-  return io.handler.returnSuccess(
-    `ended auctions: ${endedAuctions.length}`,
-    HttpStatusCode.OK
-  );
+  return {
+    statusCode: HttpStatusCode.OK,
+    body: `ended auctions: ${endedAuctions.length}`
+  };
 };
 
 export const handler = processAuctions;

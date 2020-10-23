@@ -8,10 +8,12 @@ import io from "../io";
 import getAuctionsSchema from "../schemas/getAuctionsSchema";
 
 const getAuctions: APIGatewayProxyHandler = async (event) => {
-  const queryStringParams = io.handler.queryStringParams(event);
-  const result = await service(io).getAuctions(queryStringParams);
+  const result = await service(io).getAuctions(event.queryStringParameters);
 
-  return io.handler.returnSuccess(result, HttpStatusCode.OK);
+  return {
+    statusCode: HttpStatusCode.OK,
+    body: JSON.stringify(result)
+  };
 };
 
 export const handler = commonMiddleware(getAuctions).use(

@@ -6,10 +6,12 @@ import service from "../domain/service";
 import io from "../io";
 
 const getAuction: APIGatewayProxyHandler = async (event) => {
-  const pathParams = io.handler.pathParams(event);
-  const result = await service(io).getAuction(pathParams);
+  const result = await service(io).getAuction(event.pathParameters);
 
-  return io.handler.returnSuccess(result, HttpStatusCode.OK);
+  return {
+    statusCode: HttpStatusCode.OK,
+    body: JSON.stringify(result)
+  };
 };
 
 export const handler = commonMiddleware(getAuction);

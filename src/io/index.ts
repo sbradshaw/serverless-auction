@@ -11,18 +11,6 @@ export const dynamo = {
   }
 };
 
-export const handler = {
-  input: (event: { body: any }) => event.body,
-  pathParams: (event: { pathParameters: any }) => event.pathParameters,
-  queryStringParams: (event: { queryStringParameters: any }) =>
-    event.queryStringParameters,
-  returnSuccess: (result: any, status: number) => ({
-    statusCode: status,
-    body: JSON.stringify(result)
-  })
-};
-
 export default {
-  handler: handler,
   db: dynamo
 };
