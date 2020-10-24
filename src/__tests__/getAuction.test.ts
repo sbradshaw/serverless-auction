@@ -24,7 +24,7 @@ describe("Domain Service getAuction", () => {
     };
 
     input = {
-      id: "46fbacd1-e0c3-4514-8dbc-69e0e3c21dfa"
+      id: "67890"
     };
 
     await service(io).getAuction(input);
