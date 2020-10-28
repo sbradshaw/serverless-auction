@@ -155,7 +155,7 @@ FUNCTION=getAuctions npm run mock-fn-local
 Tail the logs of a remote AWS function/handler
 
 ```
-# Tail the remote AWS CloudWatch logs for the createAuctions function/handler
+# Tail the remote AWS Cloudwatch logs for the getAuctions function/handler
 
 FUNCTION=getAuctions npm run tail-fn
 ```
