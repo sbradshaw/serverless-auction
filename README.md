@@ -1,6 +1,6 @@
 # Serverless Auction
 
-Impelementation of an online auction application using AWS and Serverless Framework with TypeScript.
+Implementation of an online auction application using AWS and Serverless Framework with TypeScript.
 
 ## Code style
 
@@ -17,7 +17,7 @@ Impelementation of an online auction application using AWS and Serverless Framew
 
 ## Features
 
-API endpoing implemented as Lambda services to add, update, and retrieve auction items
+API endpoing implemented as Lambda services to add, update and retrieve auction items
 
 ## Installation
 
