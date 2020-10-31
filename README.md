@@ -1,6 +1,6 @@
 # Serverless Auction
 
-Implementation of an online auction application using AWS and Serverless Framework with TypeScript.
+Implementation of an online auction service using AWS and Serverless Framework with TypeScript.
 
 ## Code style
 
@@ -24,7 +24,9 @@ API endpoing implemented as Lambda services to add, update and retrieve auction 
 Ensure you have AWS credentials installed on the local development machine
 
 ```
-# Under ~/.aws a credentials file similar to this (serverless-admin is an account created in IAM for this example). Replace the keys with your own examples.
+# Under ~/.aws a credentials file similar to this (serverless-admin is an
+account created in IAM for this example). Replace the keys with your
+own examples.
 
 [default]
 aws_access_key_id=<YOUR-ACCESS-KEY>
@@ -45,7 +47,6 @@ Deploy the services to AWS using Serverless Framework
 
 ```
 npm run deploy
-
 ```
 
 ## Development endpoints
@@ -162,10 +163,19 @@ FUNCTION=getAuctions npm run tail-fn
 
 ## Blueprint
 
-Overview diagram of Serverless Auction AWS cloud architecture
+Overview diagram of the full Serverless Auction AWS cloud architecture.
+
+The services are marked as grey zones indicating the three used for the project,
+auction service, authorizer service and notification service.
+
+Each is a separate Serverless Framework application.
 
 <p align="left">
-  <img src="./img/serverless-auction-3d.png" alt="3D Serverless Auction Blueprint" width="900">
+  <img 
+    src="./img/serverless-auction-3d.png"
+    alt="3D Serverless Auction Blueprint"
+    width="900"
+  >
 </p>
 
 ## License
