@@ -53,13 +53,13 @@ npm run deploy
 
 Sucessfull deployment should display the available endpoints & functions
 
-| Service          | Function        | Local endpoint                                                                      |
-| ---------------- | --------------- | ----------------------------------------------------------------------------------- |
-| Create Auction   | createAuction   | POST - https://l3dy4zqr25.execute-api.eu-west-1.amazonaws.com/dev/auction           |
-| Get Auction      | getAuctions     | GET - https://l3dy4zqr25.execute-api.eu-west-1.amazonaws.com/dev/auctions           |
-| Get All Auctions | getAuction      | GET - https://l3dy4zqr25.execute-api.eu-west-1.amazonaws.com/dev/auction/{id}       |
-| Place Bid        | placeBid        | PATCH - https://l3dy4zqr25.execute-api.eu-west-1.amazonaws.com/dev/auction/{id}/bid |
-| Process Auctions | processAuctions | N/A                                                                                 |
+| Service          | Function        | Local endpoint                                                                       |
+| ---------------- | --------------- | ------------------------------------------------------------------------------------ |
+| Create Auction   | createAuction   | POST - https://_aws-id_.execute-api._aws-region_.amazonaws.com/dev/auction           |
+| Get Auction      | getAuctions     | GET - https://_aws-id_.execute-api._aws-region_.amazonaws.com/dev/auctions           |
+| Get All Auctions | getAuction      | GET - https://_aws-id_.execute-api._aws-region_.amazonaws.com/dev/auction/{id}       |
+| Place Bid        | placeBid        | PATCH - https://_aws-id_.execute-api._aws-region_.amazonaws.com/dev/auction/{id}/bid |
+| Process Auctions | processAuctions | N/A                                                                                  |
 
 ## How to use
 
