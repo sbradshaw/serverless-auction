@@ -29,12 +29,12 @@ account created in IAM for this example). Replace the keys with your
 own examples.
 
 [default]
-aws_access_key_id=<YOUR-ACCESS-KEY>
-aws_secret_access_key=<YOUR-SECRET-ACCESS-KEY>
+aws_access_key_id=<ACCESS-KEY>
+aws_secret_access_key=<SECRET-ACCESS-KEY>
 
 [serverless-admin]
-aws_access_key_id=YOUR-ACCESS-KEY>
-aws_secret_access_key=<YOUR-SECRET-ACCESS-KEY>
+aws_access_key_id=<ACCESS-KEY>
+aws_secret_access_key=<SECRET-ACCESS-KEY>
 ```
 
 Install Serverless Framwork globally
